@@ -6,21 +6,14 @@ using ProjectManager.Application.Projects.Queries;
 namespace ProjectManager.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class ProjectController : Controller
+    [Route("projects")]
+    public class ProjectsController : Controller
     {
         private readonly IMediator _mediator;
 
-        public ProjectController(IMediator mediator)
+        public ProjectsController(IMediator mediator)
         {
             _mediator = mediator;
-        }
-
-        [HttpGet("user/{userId:guid}")]
-        public async Task<IActionResult> GetProjectsByUser(GetProjectsByUserQuery request)
-        {
-            var result = await _mediator.Send(request);
-            return Ok(result);
         }
 
         [HttpPost]
@@ -30,9 +23,10 @@ namespace ProjectManager.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(GetProjectByIdQuery query)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
+            var query = new GetProjectByIdQuery { Id = id };
             var result = await _mediator.Send(query);
             return Ok(result);
         }
