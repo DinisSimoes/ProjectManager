@@ -14,7 +14,7 @@ namespace ProjectManager.Domain.Entities
 
         public Enums.TaskStatus Status { get; set; }
 
-        public TaskPriority Priority { get; private set; } // só pode ser setado na criação
+        public TaskPriority Priority { get; private set; }
 
         public List<TaskHistory> History { get; set; } = new();
         public List<Comment> Comments { get; set; } = new();
@@ -24,7 +24,7 @@ namespace ProjectManager.Domain.Entities
             Priority = priority;
         }
 
-        public void UpdateStatus(TaskStatus newStatus, User modifiedBy)
+        public void UpdateStatus(Enums.TaskStatus newStatus, User modifiedBy)
         {
             if (Status != newStatus)
             {
