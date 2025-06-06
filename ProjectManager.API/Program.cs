@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectManager.API.Middlewares;
+using ProjectManager.Application.Interfaces;
 using ProjectManager.Application.Projects.Handlers;
+using ProjectManager.Application.Services;
 using ProjectManager.Domain.Interface;
 using ProjectManager.Infrastructure.Data;
 using ProjectManager.Infrastructure.Repositories;
@@ -20,6 +22,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 
 builder.Services.AddMediatR(cfg =>
 {
