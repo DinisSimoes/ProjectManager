@@ -17,7 +17,7 @@ namespace ProjectManager.Application.Projects.Handlers
 
         public async Task<List<ProjectResponse>> Handle(GetProjectsByUserQuery request, CancellationToken cancellationToken)
         {
-            var projects = await _projectRepository.GetByUserIdAsync(request.UserId);
+            var projects = await _projectRepository.GetByUserIdAsync(request.UserId, cancellationToken);
 
             if (projects.Count == 0)
                 throw new KeyNotFoundException("Sem projetos encontrados.");

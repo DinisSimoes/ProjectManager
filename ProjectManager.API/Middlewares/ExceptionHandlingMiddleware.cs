@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using ProjectManager.Domain.Exceptions;
+using System.Net;
 using System.Text.Json;
 
 namespace ProjectManager.API.Middlewares
@@ -36,12 +37,14 @@ namespace ProjectManager.API.Middlewares
             // Definir status e mensagem conforme o tipo da exceção
             switch (exception)
             {
+                case NotFoundException:
                 case KeyNotFoundException:
                     status = HttpStatusCode.NotFound;
                     message = exception.Message;
                     break;
                 case ArgumentException:
                 case FormatException:
+                case InvalidOperationException:
                     status = HttpStatusCode.BadRequest;
                     message = exception.Message;
                     break;
