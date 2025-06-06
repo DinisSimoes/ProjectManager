@@ -14,11 +14,11 @@ namespace ProjectManager.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<List<Project>> GetByUserIdAsync(Guid userId)
+        public async Task<List<Project>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
         {
             return await _context.Projects
                 .Where(p => p.UserId == userId)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
         public async System.Threading.Tasks.Task AddAsync(Project project, CancellationToken cancellationToken)
