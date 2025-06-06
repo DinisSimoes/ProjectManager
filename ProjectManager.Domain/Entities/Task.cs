@@ -15,6 +15,7 @@ namespace ProjectManager.Domain.Entities
         public Enums.TaskStatus Status { get; set; }
 
         public TaskPriority Priority { get; private set; }
+        public Guid ResponsibleUserId { get; set; }
 
         public List<TaskHistory> History { get; set; } = new();
         public List<Comment> Comments { get; set; } = new();
@@ -24,7 +25,7 @@ namespace ProjectManager.Domain.Entities
             Priority = priority;
         }
 
-        public void UpdateStatus(Enums.TaskStatus newStatus, User modifiedBy)
+        public void UpdateStatus(Enums.TaskStatus newStatus, Guid modifiedBy)
         {
             if (Status != newStatus)
             {
@@ -32,14 +33,14 @@ namespace ProjectManager.Domain.Entities
                 {
                     TaskId = this.Id,
                     ModificationDate = DateTime.UtcNow,
-                    ModifiedByUserId = modifiedBy.Id,
+                    ModifiedByUserId = modifiedBy,
                     ChangeDescription = $"Status changed from {Status} to {newStatus}"
                 });
                 Status = newStatus;
             }
         }
 
-        public void UpdateDetails(string newTitle, string newDescription, DateTime newDueDate, User modifiedBy)
+        public void UpdateDetails(string newTitle, string newDescription, DateTime newDueDate, Guid modifiedBy)
         {
             var changes = new List<string>();
 
@@ -53,7 +54,7 @@ namespace ProjectManager.Domain.Entities
                 {
                     TaskId = this.Id,
                     ModificationDate = DateTime.UtcNow,
-                    ModifiedByUserId = modifiedBy.Id,
+                    ModifiedByUserId = modifiedBy,
                     ChangeDescription = string.Join("; ", changes)
                 });
 
@@ -63,12 +64,12 @@ namespace ProjectManager.Domain.Entities
             }
         }
 
-        public void AddComment(string text, User user)
+        public void AddComment(string text, Guid user)
         {
             var comment = new Comment
             {
                 TaskId = this.Id,
-                UserId = user.Id,
+                UserId = user,
                 Content = text,
                 CreatedAt = DateTime.UtcNow
             };
@@ -79,7 +80,7 @@ namespace ProjectManager.Domain.Entities
             {
                 TaskId = this.Id,
                 ModificationDate = DateTime.UtcNow,
-                ModifiedByUserId = user.Id,
+                ModifiedByUserId = user,
                 ChangeDescription = $"Comment added: '{text}'"
             });
         }
