@@ -51,7 +51,7 @@ namespace ProjectManager.Application.Services
             return task;
         }
 
-        public async System.Threading.Tasks.Task UpdateTaskAsync(
+        public async Task UpdateTaskAsync(
             UpdateTaskDto updateTaskDto,
             CancellationToken cancellationToken
         )
@@ -75,13 +75,13 @@ namespace ProjectManager.Application.Services
             await _taskRepository.UpdateTaskAsync(task, cancellationToken);
         }
 
-        public async System.Threading.Tasks.Task DeleteTaskAsync(Guid projectId, Guid taskId, CancellationToken cancellationToken)
+        public async Task DeleteTaskAsync(Guid projectId, Guid taskId, CancellationToken cancellationToken)
         {
             var task = await GetTaskOrThrowAsync(projectId, taskId, cancellationToken);
             await _taskRepository.DeleteTaskAsync(task, cancellationToken);
         }
 
-        public async System.Threading.Tasks.Task AddCommentAsync(Guid projectId, Guid taskId, string comment, Guid user, CancellationToken cancellationToken)
+        public async Task AddCommentAsync(Guid projectId, Guid taskId, string comment, Guid user, CancellationToken cancellationToken)
         {
             var task = await GetTaskOrThrowAsync(projectId, taskId, cancellationToken);
             task.AddComment(comment, user);
@@ -94,14 +94,14 @@ namespace ProjectManager.Application.Services
             return task ?? throw new ArgumentException("Tarefa não encontrada.");
         }
 
-        private async System.Threading.Tasks.Task EnsureProjectExistsAsync(Guid projectId, CancellationToken cancellationToken)
+        private async Task EnsureProjectExistsAsync(Guid projectId, CancellationToken cancellationToken)
         {
             var project = await _projectRepository.GetByIdAsync(projectId, cancellationToken);
             if (project == null)
                 throw new ArgumentException("Projeto não encontrado.");
         }
 
-        private async System.Threading.Tasks.Task EnsureTaskLimitNotExceededAsync(Guid projectId, CancellationToken cancellationToken)
+        private async Task EnsureTaskLimitNotExceededAsync(Guid projectId, CancellationToken cancellationToken)
         {
             var existingTasks = await _taskRepository.GetTasksByProjectAsync(projectId, cancellationToken);
             if (existingTasks.Count() >= 20)
