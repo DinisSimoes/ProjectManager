@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: projectmanager_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: projectdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  api:
+    container_name: projectmanager_api
+    build:
+      context: .
+      dockerfile: ProjectManager.API/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  pgdata:
